@@ -1,4 +1,4 @@
---// SERVICES (GỘP 1 LẦN)
+--// SERVICES
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
@@ -23,11 +23,14 @@ guiTop.Parent = player:WaitForChild("PlayerGui")
 local text = Instance.new("TextLabel")
 text.Parent = guiTop
 text.Size = UDim2.new(1, 0, 0, 40)
+text.Position = UDim2.new(0, 0, 0, 0)
 text.BackgroundTransparency = 1
 text.Text = "WANDA X MIYU ON TOP🏆"
 text.TextSize = 25
 text.Font = Enum.Font.GothamBold
 text.TextStrokeTransparency = 0.3
+text.TextStrokeColor3 = Color3.new(0, 0, 0)
+text.ZIndex = 10
 
 local hue = 0
 RunService.RenderStepped:Connect(function(dt)
@@ -36,55 +39,179 @@ RunService.RenderStepped:Connect(function(dt)
 end)
 
 ----------------------------------------------------------------
--- UI
+-- MAIN UI
 ----------------------------------------------------------------
+
 if player.PlayerGui:FindFirstChild("MeowHubUI") then
 	player.PlayerGui.MeowHubUI:Destroy()
 end
 
-local gui = Instance.new("ScreenGui", player.PlayerGui)
+local gui = Instance.new("ScreenGui")
 gui.Name = "MeowHubUI"
 gui.ResetOnSpawn = false
+gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+gui.Parent = player.PlayerGui
 
-local logoBtn = Instance.new("ImageButton", gui)
+----------------------------------------------------------------
+-- LOGO BUTTON
+----------------------------------------------------------------
+local logoBtn = Instance.new("ImageButton")
 logoBtn.Size = UDim2.new(0,46,0,46)
 logoBtn.Position = UDim2.new(0,14,0,14)
+logoBtn.BackgroundColor3 = Color3.fromRGB(25, 10, 10)
 logoBtn.Image = "rbxassetid://134043626663084"
+logoBtn.AutoButtonColor = false
+logoBtn.Parent = gui
 
-local main = Instance.new("Frame", gui)
-main.Size = UDim2.new(0,430,0,260)
-main.Position = UDim2.new(0.5,-215,0.5,-130)
-main.BackgroundColor3 = Color3.fromRGB(18,8,8)
+Instance.new("UICorner", logoBtn).CornerRadius = UDim.new(1,0)
 
-Instance.new("UICorner", main).CornerRadius = UDim.new(0,22)
+local logoStroke = Instance.new("UIStroke", logoBtn)
+logoStroke.Color = Color3.fromRGB(255, 60, 40)
+logoStroke.Thickness = 2
 
-logoBtn.MouseButton1Click:Connect(function()
-	main.Visible = not main.Visible
+task.spawn(function()
+	while task.wait(0.03) do
+		logoStroke.Transparency = 0.2 + math.abs(math.sin(tick()*1.5))*0.35
+	end
 end)
 
 ----------------------------------------------------------------
--- STATS
+-- MAIN FRAME
 ----------------------------------------------------------------
-local fpsL = Instance.new("TextLabel", main)
-fpsL.Position = UDim2.new(0,10,0,10)
-fpsL.Size = UDim2.new(0,200,0,20)
-fpsL.BackgroundTransparency = 1
+local main = Instance.new("Frame")
+main.Size = UDim2.new(0,430,0,260)
+main.Position = UDim2.new(0.5,-215,0.5,-130)
+main.BackgroundColor3 = Color3.fromRGB(18, 8, 8)
+main.BorderSizePixel = 0
+main.Parent = gui
 
-local pingL = fpsL:Clone()
-pingL.Parent = main
-pingL.Position = UDim2.new(0,10,0,30)
+Instance.new("UICorner", main).CornerRadius = UDim.new(0,22)
 
-local timeL = fpsL:Clone()
-timeL.Parent = main
-timeL.Position = UDim2.new(0,10,0,50)
+local neon = Instance.new("UIStroke", main)
+neon.Color = Color3.fromRGB(255, 70, 40)
+neon.Thickness = 2
 
+task.spawn(function()
+	while task.wait(0.03) do
+		neon.Transparency = 0.18 + math.abs(math.sin(tick()*1.4))*0.28
+	end
+end)
+
+----------------------------------------------------------------
+-- BACKGROUND
+----------------------------------------------------------------
+local bg = Instance.new("ImageLabel")
+bg.Size = UDim2.new(1,0,1,0)
+bg.BackgroundTransparency = 1
+bg.Image = "rbxassetid://131171383989604"
+bg.ImageTransparency = 0.15
+bg.ScaleType = Enum.ScaleType.Crop
+bg.Parent = main
+
+Instance.new("UICorner", bg).CornerRadius = UDim.new(0,22)
+
+----------------------------------------------------------------
+-- AVATAR
+----------------------------------------------------------------
+local avatar = Instance.new("ImageLabel")
+avatar.Size = UDim2.new(0,64,0,64)
+avatar.Position = UDim2.new(0,18,0,18)
+avatar.BackgroundTransparency = 1
+avatar.Image = Players:GetUserThumbnailAsync(
+	player.UserId,
+	Enum.ThumbnailType.HeadShot,
+	Enum.ThumbnailSize.Size150x150
+)
+avatar.Parent = main
+
+Instance.new("UICorner", avatar).CornerRadius = UDim.new(1,0)
+
+local avatarStroke = Instance.new("UIStroke", avatar)
+avatarStroke.Color = Color3.fromRGB(255, 80, 50)
+avatarStroke.Thickness = 2
+
+----------------------------------------------------------------
+-- TITLE
+----------------------------------------------------------------
+local title = Instance.new("TextLabel")
+title.Text = "Wanda x Miyu HUB"
+title.Font = Enum.Font.GothamBold
+title.TextSize = 22
+title.TextColor3 = Color3.fromRGB(255, 90, 60)
+title.BackgroundTransparency = 1
+title.Position = UDim2.new(0,98,0,22)
+title.Size = UDim2.new(1,-110,0,26)
+title.TextXAlignment = Enum.TextXAlignment.Left
+title.Parent = main
+
+----------------------------------------------------------------
+-- SUBTITLE
+----------------------------------------------------------------
+local sub = Instance.new("TextLabel")
+sub.Text = "Auto Kill Kaitun The | Strongest Battleground"
+sub.Font = Enum.Font.GothamBold
+sub.TextSize = 14
+sub.TextColor3 = Color3.fromRGB(255, 130, 100)
+sub.BackgroundTransparency = 1
+sub.Position = UDim2.new(0,98,0,50)
+sub.Size = UDim2.new(1,-110,0,20)
+sub.TextXAlignment = Enum.TextXAlignment.Left
+sub.Parent = main
+
+----------------------------------------------------------------
+-- INFO PANEL
+----------------------------------------------------------------
+local info = Instance.new("Frame")
+info.Size = UDim2.new(1,-36,0,120)
+info.Position = UDim2.new(0,18,0,92)
+info.BackgroundTransparency = 1
+info.Parent = main
+
+local function label(y)
+	local l = Instance.new("TextLabel")
+	l.Size = UDim2.new(1,0,0,20)
+	l.Position = UDim2.new(0,0,0,y)
+	l.BackgroundTransparency = 1
+	l.Font = Enum.Font.GothamBold
+	l.TextSize = 16
+	l.TextXAlignment = Enum.TextXAlignment.Left
+	l.TextColor3 = Color3.fromRGB(255, 140, 110)
+	l.Parent = info
+
+	local stroke = Instance.new("UIStroke", l)
+	stroke.Color = Color3.fromRGB(255, 60, 40)
+	stroke.Thickness = 1.2
+
+	return l
+end
+
+local fpsL = label(0)
+local pingL = label(22)
+local timeL = label(44)
+
+local thanksL = Instance.new("TextLabel")
+thanksL.Size = UDim2.new(1, 0, 0, 26)
+thanksL.Position = UDim2.new(0, 0, 0, 66)
+thanksL.BackgroundTransparency = 1
+thanksL.Font = Enum.Font.GothamBold
+thanksL.TextSize = 26
+thanksL.TextColor3 = Color3.fromRGB(255, 200, 150)
+thanksL.TextXAlignment = Enum.TextXAlignment.Left
+thanksL.Text = "Thank You So Much!"
+thanksL.Parent = info
+
+Instance.new("UIStroke", thanksL).Color = Color3.fromRGB(255, 80, 60)
+
+----------------------------------------------------------------
+-- UPDATE STATS
+----------------------------------------------------------------
 local frames = 0
 local last = tick()
 
 RunService.RenderStepped:Connect(function()
 	frames += 1
 	if tick() - last >= 1 then
-		fpsL.Text = "FPS: "..frames
+		fpsL.Text = "FPS: " .. frames
 		frames = 0
 		last = tick()
 	end
@@ -95,7 +222,15 @@ RunService.RenderStepped:Connect(function()
 	local ok, ping = pcall(function()
 		return Stats.Network.ServerStatsItem["Data Ping"]:GetValueString()
 	end)
-	pingL.Text = "Ping: "..(ok and ping or "N/A")
+
+	pingL.Text = "Ping: " .. (ok and ping or "N/A")
+end)
+
+----------------------------------------------------------------
+-- TOGGLE UI
+----------------------------------------------------------------
+logoBtn.MouseButton1Click:Connect(function()
+	main.Visible = not main.Visible
 end)
 
 ----------------------------------------------------------------
@@ -107,15 +242,10 @@ player.Idled:Connect(function()
 end)
 
 ----------------------------------------------------------------
--- OPTIMIZE (NHẸ, KHÔNG SPAM)
+-- OPTIMIZE (FIX LAG)
 ----------------------------------------------------------------
 settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
 if setfpscap then setfpscap(999) end
-
-if Terrain then
-	Terrain.WaterWaveSize = 0
-	Terrain.WaterTransparency = 1
-end
 
 Lighting.GlobalShadows = false
 
@@ -131,7 +261,7 @@ task.spawn(function()
 end)
 
 ----------------------------------------------------------------
--- AUTO FARM
+-- AUTO FARM (GIỮ NGUYÊN CHỨC NĂNG + FIX MƯỢT)
 ----------------------------------------------------------------
 local Settings = {
 	AutoClickDelay = 0.2,
@@ -173,10 +303,6 @@ local function NextTarget()
 	return table.remove(State.TargetQueue,1)
 end
 
-Players.PlayerRemoving:Connect(function(p)
-	if State.Target == p then State.Target = nil end
-end)
-
 BuildQueue()
 
 local function Click()
@@ -209,7 +335,6 @@ RunService.Heartbeat:Connect(function()
 
 	local pos = enemyRoot.Position + Vector3.new(0,Settings.HoverHeight,0)
 
-	-- DI CHUYỂN MƯỢT (ANTI KICK)
 	myRoot.CFrame = myRoot.CFrame:Lerp(
 		CFrame.new(pos, enemyRoot.Position),
 		0.3
