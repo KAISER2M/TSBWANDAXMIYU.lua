@@ -1,0 +1,512 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local Stats = game:GetService("Stats")
+
+local player = Players.LocalPlayer
+
+----------------------------------------------------------------
+-- RAINBOW TOP TEXT
+----------------------------------------------------------------
+local guiTop = Instance.new("ScreenGui")
+guiTop.Name = "RainbowTextTop"
+guiTop.ResetOnSpawn = false
+guiTop.Parent = player:WaitForChild("PlayerGui")
+
+local text = Instance.new("TextLabel")
+text.Parent = guiTop
+text.Size = UDim2.new(1, 0, 0, 40)
+text.Position = UDim2.new(0, 0, 0, 0)
+text.BackgroundTransparency = 1
+text.Text = "WANDA X MIYU ON TOP🏆"
+text.TextSize = 25
+text.Font = Enum.Font.GothamBold
+text.TextStrokeTransparency = 0.3
+text.TextStrokeColor3 = Color3.new(0, 0, 0)
+text.ZIndex = 10
+
+local hue = 0
+RunService.RenderStepped:Connect(function(dt)
+	hue = (hue + dt * 0.25) % 1
+	text.TextColor3 = Color3.fromHSV(hue, 1, 1)
+end)
+
+----------------------------------------------------------------
+-- MAIN UI
+----------------------------------------------------------------
+
+-- Clear old UI
+if player.PlayerGui:FindFirstChild("MeowHubUI") then
+	player.PlayerGui.MeowHubUI:Destroy()
+end
+
+local gui = Instance.new("ScreenGui")
+gui.Name = "MeowHubUI"
+gui.ResetOnSpawn = false
+gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+gui.Parent = player.PlayerGui
+
+----------------------------------------------------------------
+-- LOGO BUTTON
+----------------------------------------------------------------
+local logoBtn = Instance.new("ImageButton")
+logoBtn.Size = UDim2.new(0,46,0,46)
+logoBtn.Position = UDim2.new(0,14,0,14)
+logoBtn.BackgroundColor3 = Color3.fromRGB(25, 10, 10)
+logoBtn.Image = "rbxassetid://134043626663084"
+logoBtn.AutoButtonColor = false
+logoBtn.Parent = gui
+
+Instance.new("UICorner", logoBtn).CornerRadius = UDim.new(1,0)
+
+local logoStroke = Instance.new("UIStroke", logoBtn)
+logoStroke.Color = Color3.fromRGB(255, 60, 40)
+logoStroke.Thickness = 2
+
+task.spawn(function()
+	while task.wait(0.03) do
+		logoStroke.Transparency = 0.2 + math.abs(math.sin(tick()*1.5))*0.35
+	end
+end)
+
+----------------------------------------------------------------
+-- MAIN FRAME
+----------------------------------------------------------------
+local main = Instance.new("Frame")
+main.Size = UDim2.new(0,430,0,260)
+main.Position = UDim2.new(0.5,-215,0.5,-130)
+main.BackgroundColor3 = Color3.fromRGB(18, 8, 8)
+main.BorderSizePixel = 0
+main.Parent = gui
+
+Instance.new("UICorner", main).CornerRadius = UDim.new(0,22)
+
+local neon = Instance.new("UIStroke", main)
+neon.Color = Color3.fromRGB(255, 70, 40)
+neon.Thickness = 2
+
+task.spawn(function()
+	while task.wait(0.03) do
+		neon.Transparency = 0.18 + math.abs(math.sin(tick()*1.4))*0.28
+	end
+end)
+
+----------------------------------------------------------------
+-- BACKGROUND
+----------------------------------------------------------------
+local bg = Instance.new("ImageLabel")
+bg.Size = UDim2.new(1,0,1,0)
+bg.BackgroundTransparency = 1
+bg.Image = "rbxassetid://131171383989604"
+bg.ImageTransparency = 0.15
+bg.ScaleType = Enum.ScaleType.Crop
+bg.Parent = main
+
+Instance.new("UICorner", bg).CornerRadius = UDim.new(0,22)
+
+----------------------------------------------------------------
+-- AVATAR
+----------------------------------------------------------------
+local avatar = Instance.new("ImageLabel")
+avatar.Size = UDim2.new(0,64,0,64)
+avatar.Position = UDim2.new(0,18,0,18)
+avatar.BackgroundTransparency = 1
+avatar.Image = Players:GetUserThumbnailAsync(
+	player.UserId,
+	Enum.ThumbnailType.HeadShot,
+	Enum.ThumbnailSize.Size150x150
+)
+avatar.Parent = main
+
+Instance.new("UICorner", avatar).CornerRadius = UDim.new(1,0)
+
+local avatarStroke = Instance.new("UIStroke", avatar)
+avatarStroke.Color = Color3.fromRGB(255, 80, 50)
+avatarStroke.Thickness = 2
+
+----------------------------------------------------------------
+-- TITLE
+----------------------------------------------------------------
+local title = Instance.new("TextLabel")
+title.Text = "Wanda x Miyu HUB"
+title.Font = Enum.Font.GothamBold
+title.TextSize = 22
+title.TextColor3 = Color3.fromRGB(255, 90, 60)
+title.BackgroundTransparency = 1
+title.Position = UDim2.new(0,98,0,22)
+title.Size = UDim2.new(1,-110,0,26)
+title.TextXAlignment = Enum.TextXAlignment.Left
+title.Parent = main
+
+----------------------------------------------------------------
+-- SUBTITLE
+----------------------------------------------------------------
+local sub = Instance.new("TextLabel")
+sub.Text = "Auto Kill Kaitun The | Strongest Batterground"
+sub.Font = Enum.Font.GothamBold
+sub.TextSize = 14
+sub.TextColor3 = Color3.fromRGB(255, 130, 100)
+sub.BackgroundTransparency = 1
+sub.Position = UDim2.new(0,98,0,50)
+sub.Size = UDim2.new(1,-110,0,20)
+sub.TextXAlignment = Enum.TextXAlignment.Left
+sub.Parent = main
+
+----------------------------------------------------------------
+-- INFO PANEL
+----------------------------------------------------------------
+local info = Instance.new("Frame")
+info.Size = UDim2.new(1,-36,0,120)
+info.Position = UDim2.new(0,18,0,92)
+info.BackgroundTransparency = 1
+info.Parent = main
+
+local function label(y)
+	local l = Instance.new("TextLabel")
+	l.Size = UDim2.new(1,0,0,20)
+	l.Position = UDim2.new(0,0,0,y)
+	l.BackgroundTransparency = 1
+	l.Font = Enum.Font.GothamBold
+	l.TextSize = 16
+	l.TextXAlignment = Enum.TextXAlignment.Left
+	l.TextColor3 = Color3.fromRGB(255, 140, 110)
+	l.Parent = info
+
+	local stroke = Instance.new("UIStroke", l)
+	stroke.Color = Color3.fromRGB(255, 60, 40)
+	stroke.Thickness = 1.2
+
+	return l
+end
+
+local fpsL = label(0)
+local pingL = label(22)
+local timeL = label(44)
+
+-- THANK YOU LINE (to hơn)
+local thanksL = Instance.new("TextLabel")
+thanksL.Size = UDim2.new(1, 0, 0, 26)
+thanksL.Position = UDim2.new(0, 0, 0, 66)
+thanksL.BackgroundTransparency = 1
+thanksL.Font = Enum.Font.GothamBold
+thanksL.TextSize = 26
+thanksL.TextColor3 = Color3.fromRGB(255, 200, 150)
+thanksL.TextXAlignment = Enum.TextXAlignment.Left
+thanksL.Text = "Thank You So Much!"
+thanksL.Parent = info
+
+Instance.new("UIStroke", thanksL).Color = Color3.fromRGB(255, 80, 60)
+
+----------------------------------------------------------------
+-- UPDATE STATS
+----------------------------------------------------------------
+local frames = 0
+local last = tick()
+local fps = 0
+
+RunService.RenderStepped:Connect(function()
+	frames += 1
+
+	if tick() - last >= 1 then
+		fps = frames
+		frames = 0
+		last = tick()
+	end
+
+	fpsL.Text = "FPS: " .. fps
+
+	local t = os.date("*t")
+	timeL.Text = string.format("Time: %02d:%02d:%02d", t.hour, t.min, t.sec)
+
+	local ok, ping = pcall(function()
+		return Stats.Network.ServerStatsItem["Data Ping"]:GetValueString()
+	end)
+
+	pingL.Text = "Ping: " .. (ok and ping or "N/A")
+end)
+
+----------------------------------------------------------------
+-- TOGGLE UI
+----------------------------------------------------------------
+local uiOpen = true
+logoBtn.MouseButton1Click:Connect(function()
+	uiOpen = not uiOpen
+	main.Visible = uiOpen
+end)
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-- ============================================================
+-- ULTRA OPTIMIZE + ANTI AFK - FULL COMBINED
+-- ============================================================
+
+local Players = game:GetService("Players")
+local VirtualUser = game:GetService("VirtualUser")
+local Lighting = game:GetService("Lighting")
+local Workspace = game:GetService("Workspace")
+local RunService = game:GetService("RunService")
+local Terrain = Workspace:FindFirstChildOfClass("Terrain")
+
+local player = Players.LocalPlayer
+
+-- ===== ANTI AFK =====
+player.Idled:Connect(function()
+ VirtualUser:CaptureController()
+ VirtualUser:ClickButton2(Vector2.new())
+end)
+
+-- ===== CẤU HÌNH =====
+local antiLag = true
+local ultra = true
+local super = true
+
+-- ===== SETTINGS HỆ THỐNG =====
+settings().Rendering.QualityLevel = Enum.QualityLevel.Level01
+if setfpscap then setfpscap(999) end
+
+-- ===== TỐI ƯU TERRAIN =====
+if Terrain then
+ Terrain.WaterWaveSize = 0
+ Terrain.WaterWaveSpeed = 0
+ Terrain.WaterReflectance = 0
+ Terrain.WaterTransparency = 1
+ Terrain.Decoration = false
+end
+
+-- ===== TỐI ƯU LIGHTING =====
+local function optimizeLighting()
+ Lighting.GlobalShadows = false
+ Lighting.FogEnd = 100000
+ Lighting.FogStart = 99999
+ Lighting.Brightness = 1
+ Lighting.ClockTime = 14
+ Lighting.Ambient = Color3.fromRGB(180, 180, 180)
+ Lighting.OutdoorAmbient = Color3.fromRGB(180, 180, 180)
+ for _, v in ipairs(Lighting:GetChildren()) do
+ if v:IsA("PostEffect") then v.Enabled = false end
+ end
+end
+
+-- ===== CÁC TÊN OBJECT CẦN XÓA =====
+local destroyNames = {
+ "Tree","Rock","Stone","Debris","Effect","Grass","Bush",
+ "Wood","Leaf","Cloud","Impact","ring","slash","shockwave",
+ "hit","strike","blast"
+}
+
+local function shouldDestroy(name)
+ local lower = name:lower()
+ for _, n in ipairs(destroyNames) do
+ if lower:find(n:lower()) then return true end
+ end
+ return false
+end
+
+-- ===== TỐI ƯU TỪNG OBJECT =====
+local function ExtremeOptimize(obj)
+ if obj:IsA("ParticleEmitter") or obj:IsA("Smoke") or
+ obj:IsA("Fire") or obj:IsA("Sparkles") or obj:IsA("Trail") then
+ obj.Enabled = false
+ obj.Rate = 0
+ task.delay(0.1, function() if obj and obj.Parent then obj:Destroy() end end)
+ elseif obj:IsA("Texture") or obj:IsA("Decal") then
+ obj:Destroy()
+ elseif obj:IsA("PostEffect") or obj:IsA("BloomEffect") or
+ obj:IsA("BlurEffect") or obj:IsA("SunRaysEffect") or
+ obj:IsA("ColorCorrectionEffect") or obj:IsA("DepthOfFieldEffect") then
+ obj.Enabled = false
+ elseif obj:IsA("BasePart") then
+ obj.Material = Enum.Material.SmoothPlastic
+ obj.Reflectance = 0
+ obj.CastShadow = false
+ if shouldDestroy(obj.Name) then
+ obj.Transparency = 1
+ obj.CanCollide = false
+ end
+ elseif obj:IsA("MeshPart") then
+ obj.RenderFidelity = Enum.RenderFidelity.Performance
+ obj.CastShadow = false
+ if shouldDestroy(obj.Name) then obj:Destroy() end
+ elseif obj:IsA("SpecialMesh") then
+ if shouldDestroy(obj.Name) then obj:Destroy() end
+ elseif obj:IsA("Explosion") then
+ obj.BlastPressure = 0
+ obj.BlastRadius = 0
+ elseif obj:IsA("SelectionBox") or obj:IsA("SelectionSphere") then
+ obj:Destroy()
+ end
+end
+
+-- ===== QUÉT TOÀN BỘ WORKSPACE =====
+local function fullScan()
+ for _, obj in ipairs(Workspace:GetDescendants()) do
+ ExtremeOptimize(obj)
+ end
+end
+
+-- ===== ANTI-LAG MỖI FRAME =====
+local ticker = 0
+RunService.RenderStepped:Connect(function(dt)
+ ticker += dt
+ if antiLag then
+ Lighting.GlobalShadows = false
+ Lighting.FogEnd = 100000
+ end
+ if ticker >= 2 then
+ ticker = 0
+ if ultra or super then fullScan() end
+ end
+end)
+
+-- ===== BẮT OBJECT MỚI SPAWN =====
+Workspace.DescendantAdded:Connect(function(obj)
+ if ultra or super then
+ task.defer(function()
+ if obj and obj.Parent then ExtremeOptimize(obj) end
+ end)
+ end
+end)
+
+-- ===== KHỞI CHẠY =====
+optimizeLighting()
+fullScan()
+
+print("[OptimizeScript] Đã kích hoạt - Anti AFK + FPS tối đa!")
+
+
+---------------------------------------------------------------------------------------
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local VIM = game:GetService("VirtualInputManager")
+
+local LP = Players.LocalPlayer
+
+local Settings = {
+ AutoClickDelay = 0.1,
+ AbilityCycleDelay = 0.2,
+ HoverHeight = 4.5,
+}
+
+local State = {
+ Target = nil,
+ Enabled = true,
+ LastClick = 0,
+ LastAbility = 0,
+ AbilityIndex = 1,
+ TargetQueue = {}, -- danh sách chờ
+}
+
+local function Alive(p)
+ if not p.Character then return false end
+ local h = p.Character:FindFirstChildOfClass("Humanoid")
+ return h and h.Health > 0
+end
+
+local function Root(c)
+ return c and (
+ c:FindFirstChild("HumanoidRootPart")
+ or c:FindFirstChild("Torso")
+ or c:FindFirstChild("UpperTorso")
+ )
+end
+
+-- build queue toàn bộ player trong server
+local function BuildQueue()
+ State.TargetQueue = {}
+ for _, p in pairs(Players:GetPlayers()) do
+ if p ~= LP then
+ table.insert(State.TargetQueue, p)
+ end
+ end
+end
+
+-- lấy target tiếp theo trong queue
+local function NextTarget()
+ while #State.TargetQueue > 0 do
+ local p = table.remove(State.TargetQueue, 1)
+ if p and p.Parent and Alive(p) then
+ return p
+ end
+ end
+ -- hết queue thì build lại
+ BuildQueue()
+ return nil
+end
+
+-- khi player rời server
+Players.PlayerRemoving:Connect(function(p)
+ if State.Target == p then
+ State.Target = nil
+ end
+ -- xóa khỏi queue nếu có
+ for i, v in ipairs(State.TargetQueue) do
+ if v == p then
+ table.remove(State.TargetQueue, i)
+ break
+ end
+ end
+end)
+
+-- khi có player mới join thêm vào queue
+Players.PlayerAdded:Connect(function(p)
+ table.insert(State.TargetQueue, p)
+end)
+
+local function Click()
+ local char = LP.Character
+ if char and char:FindFirstChild("Communicate") then
+ char.Communicate:FireServer({Goal = "LeftClick", Mobile = true})
+ char.Communicate:FireServer({Goal = "LeftClickRelease", Mobile = true})
+ end
+end
+
+local keys = {
+ Enum.KeyCode.One,
+ Enum.KeyCode.Two,
+ Enum.KeyCode.Three,
+ Enum.KeyCode.Four
+}
+
+local function Press(k)
+ VIM:SendKeyEvent(true, k, false, nil)
+ task.wait()
+ VIM:SendKeyEvent(false, k, false, nil)
+end
+
+-- build queue lần đầu
+BuildQueue()
+
+RunService.Heartbeat:Connect(function()
+ if not State.Enabled then return end
+ if not Alive(LP) then return end
+
+ -- target die hoặc thoát thì lấy người tiếp theo
+ if not State.Target or not Alive(State.Target) then
+ State.Target = NextTarget()
+ return
+ end
+
+ local myRoot = Root(LP.Character)
+ local enemyRoot = Root(State.Target.Character)
+ if not myRoot or not enemyRoot then return end
+
+ -- bay lên đầu enemy
+ local pos = enemyRoot.Position + Vector3.new(0, Settings.HoverHeight, 0)
+ myRoot.CFrame = CFrame.new(pos, enemyRoot.Position)
+
+ -- auto click
+ if tick() - State.LastClick > Settings.AutoClickDelay then
+ Click()
+ State.LastClick = tick()
+ end
+
+ -- spam skill
+ if tick() - State.LastAbility > Settings.AbilityCycleDelay then
+ Press(keys[State.AbilityIndex])
+ State.AbilityIndex += 1
+ if State.AbilityIndex > 4 then
+ State.AbilityIndex = 1
+ end
+ State.LastAbility = tick()
+ end
+end)
